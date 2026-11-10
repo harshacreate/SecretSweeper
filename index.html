@@ -52,12 +52,12 @@ const $=id=>document.getElementById(id);
 const PATS=[
   ["Email",/\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b/g],
   ["IPv4",/\b(?:(?:25[0-5]|2[0-4]\d|1?\d?\d)\.){3}(?:25[0-5]|2[0-4]\d|1?\d?\d)\b/g],
-  ["Credit card",/\b(?:\d[ -]*?){13,16}\b/g],
+  ["Credit card",/\b(?:\d[ -]*?){13,19}\b/g],
   ["AWS access key",/\bAKIA[0-9A-Z]{16}\b/g],
   ["API key / token",/\b(?:sk|pk|ghp|xox[baprs]|AIza)[A-Za-z0-9_\-]{10,}\b/g],
   ["JWT",/\beyJ[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\b/g],
   ["Phone",/\b(?:\+?\d{1,3}[ -]?)?(?:\(?\d{3}\)?[ -]?)\d{3}[ -]?\d{4}\b/g],
-  ["Private key block",/-----BEGIN [A-Z ]*PRIVATE KEY-----/g],
+  ["Private key block",/-----BEGIN ([A-Z ]*PRIVATE KEY)-----[\s\S]*?(?:-----END \1-----|$)/g],
 ];
 function esc(s){return String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]))}
 function luhn(s){const d=s.replace(/\D/g,'');if(d.length<13||d.length>19)return false;let sum=0,alt=false;for(let i=d.length-1;i>=0;i--){let n=+d[i];if(alt){n*=2;if(n>9)n-=9}sum+=n;alt=!alt}return sum%10===0}
@@ -66,7 +66,9 @@ Card on file: 4111 1111 1111 1111 (test)
 AWS_KEY=AKIAIOSFODNN7EXAMPLE  token=sk_live_abc123DEF456ghi789
 Call back at +1 (415) 555-0132
 session=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIn0.abcdEFGHijkl
------BEGIN RSA PRIVATE KEY-----`;scan()}
+-----BEGIN RSA PRIVATE KEY-----
+test-key-material
+-----END RSA PRIVATE KEY-----`;scan()}
 function scan(){
   const text=$('in').value;if(!text){$('counts').innerHTML='';$('summary').textContent='';$('view').innerHTML='<span class="muted">paste something above…</span>';return}
   const found={},spans=[];

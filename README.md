@@ -2,7 +2,9 @@
 
 **Scan text and logs for secrets and PII, then redact them.**
 
-SecretSweeper scans pasted content for emails, IPv4 addresses, Luhn-valid credit-card numbers, AWS keys, API tokens, JWTs, phone numbers and private-key blocks, highlights every match, and produces a redacted copy safe to share.
+SecretSweeper scans pasted content for emails, IPv4 addresses, Luhn-valid credit-card numbers, AWS keys, API tokens, JWTs, phone numbers and private-key blocks, highlights matches, and produces a redacted copy for review.
+
+Detection is pattern-based and can miss secrets or personal information. Review the redacted output carefully before sharing; it is not a guarantee that the text is safe to disclose.
 
 ## Highlights
 - **Pure front-end** — HTML, CSS and vanilla JavaScript. No backend, no build step, no Python.
